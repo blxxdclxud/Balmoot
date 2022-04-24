@@ -1,1 +1,6 @@
 Flask==2.0.2
+SQLAlchemy==1.4.31
+SQLAlchemy-serializer==1.4.1
+requests==2.26.0
+WTForms==3.0.1
+Werkzeug==2.0.3
