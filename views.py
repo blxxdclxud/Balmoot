@@ -6,7 +6,7 @@ from data.forms import LoginForm, RegisterForm
 from data.user_db import User
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = 'SuPer-UltrA_seKretNiy_kluCH'
+app.config['SECRET_KEY'] = 'SuPer-UltrA|m366a}_seKretNiy_kluCH'
 
 login_manager = LoginManager()
 login_manager.init_app(app)
@@ -26,7 +26,7 @@ def load_user(pk):
     return db_sess.query(User).get(pk)
 
 
-@app.route('/login', methods=['GET', 'POST'])
+@app.route('/auth/login', methods=['GET', 'POST'])
 def login():
     form = LoginForm()
     context = {
@@ -78,6 +78,14 @@ def register():
 def logout():
     logout_user()
     return redirect("/")
+
+@app.route('/auth/profile')
+@login_required
+def profile():
+    context = {
+        'title': 'USER_NAME',
+    }
+    return render_template('auth/profile.html', **context)
 
 
 @app.route('/quizzes/')
