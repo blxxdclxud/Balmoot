@@ -1,15 +1,21 @@
 from flask import Flask, app, render_template, redirect
 from flask_login import LoginManager, login_user, login_required, logout_user
+from flask_restful import Api
 
 from data import db_session
+from data import quiz_resources
 from data.forms import LoginForm, RegisterForm
 from data.user_db import User
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'SuPer-UltrA|m366a}_seKretNiy_kluCH'
+api = Api(app)
 
 login_manager = LoginManager()
 login_manager.init_app(app)
+
+api.add_resource(quiz_resources.QuizListResource, '/api/v2/news')
+api.add_resource(quiz_resources.QuizResource, '/api/v2/news/<int:news_id>')
 
 
 @app.route('/')
@@ -79,6 +85,7 @@ def logout():
     logout_user()
     return redirect("/")
 
+
 @app.route('/auth/profile')
 @login_required
 def profile():
@@ -129,5 +136,6 @@ def quiz_pass(pk, question_num):
 
 
 def main():
+    db_session.global_init("db/balmoot.db")
     app.debug = True
     app.run(port=8080, host='127.0.0.1')
