@@ -1,6 +1,6 @@
-from json import dumps
+from json import dumps, loads
 
-from flask import Flask, app, render_template, redirect
+from flask import Flask, app, render_template, redirect, abort
 from flask_login import LoginManager, login_user, login_required, logout_user, \
     current_user
 from flask_restful import Api
@@ -203,11 +203,16 @@ def quiz_edit(pk):
     render_template('quizzes/quiz_edit.html', **context)
 
 
-@app.route('/quizzes/<int:pk>/')  # primary key (Первичный ключ)
+@app.route('/quizzes/<int:pk>/')
 def quiz_info(pk):
+    db_sess = db_session.create_session()
+    quiz = db_sess.query(Quiz).filter(Quiz.id == pk).first()
     context = {
-        'title': 'QUIZ_NAME',  # Replace with the name of quiz
+        'title': str(quiz.title),
     }
+    if not quiz:
+        abort(404)
+    context['quiz'] = quiz
     return render_template('quizzes/quiz_info.html', **context)
 
 
@@ -216,13 +221,22 @@ def quizzes_list():
     context = {
         'title': 'List of Quizzes',
     }
+    db_sess = db_session.create_session()
+    quizzes = db_sess.query(Quiz).all()
+    context['quizzes'] = quizzes
     return render_template('quizzes/quizzes_lis.html', **context)
 
 
-@app.route('/quizzes/<int:pk>/passing/<int:question_num>')
-def quiz_pass(pk, question_num):
+@app.route('/quizzes/<int:pk>/passing/<int:qn>')  # Question num
+def quiz_pass(pk, qn):
+    db_sess = db_session.create_session()
+    quiz = db_sess.query(Quiz).filter(Quiz.id == pk).first()
+    questions = loads(quiz.questions)
+    print(questions)
+    quest = questions[qn]
     context = {
-        'title': 'QUESTION_NAME'  # Replace title
+        'title': str(quiz.title),
+        'quest': quest
     }
     render_template('quizzes/quiz_pass.html', **context)
 
