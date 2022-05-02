@@ -1,11 +1,14 @@
+from json import dumps
+
 from flask import Flask, app, render_template, redirect
 from flask_login import LoginManager, login_user, login_required, logout_user, \
     current_user
 from flask_restful import Api
 
-from data import db_session
-from data import quiz_resources
-from data.forms import LoginForm, RegisterForm, EditForm
+from data import db_session, quiz_resources
+from data.forms import LoginForm, RegisterForm, EditForm, QuizCreateForm, \
+    QuizEditForm
+from data.quiz_db import Quiz
 from data.user_db import User
 
 app = Flask(__name__)
@@ -124,29 +127,79 @@ def profile():
     return render_template('auth/profile.html', **context)
 
 
-#  Тут надо сделать создание
-
 @app.route('/quizzes/create')
+@login_required
 def quiz_create():
+    form = QuizCreateForm()
     context = {
-        'title': 'Create quiz'
+        'form': form,
+        'title': 'Create quiz',
     }
-    render_template('quizzes/quiz_create.html')
+    if form.validate_on_submit():
+        db_sess = db_session.create_session()
+        quiz = db_sess.query(Quiz).filter(
+            Quiz.title == form.title.data).first()
+        if quiz:
+            context['message'] = 'Quiz с таким названием уже существует'
+            render_template('quizzes/quiz_create.html', **context)
+        quiz = Quiz(
+            title=form.title.data,
+            text=form.text.data,
+            owner_id=current_user.id,
+        )
+        quiz.questions = dumps(form.pages)
+        db_sess.commit()
+        redirect(f'/quizzes/{quiz.id}/')
+    render_template('quizzes/quiz_create.html', **context)
 
 
-@app.route('/quizzes/<int:pk>/delete')
+@app.route('/quizzes/<int:pk>/delete', methods=['GET', 'POST'])
+@login_required
 def quiz_delete(pk):
     context = {
         'title': 'Quiz_delete'
     }
+    db_sess = db_session.create_session()
+    quiz = db_sess.query(Quiz).filter(Quiz.id == pk).first()
+    if not quiz:
+        context['message'] = 'Такой Quiz не найден'
+        return render_template('quizzes/quizz_delete.html', **context)
+    if quiz and quiz.owner_id == current_user.id:
+        db_sess.delete(quiz)
+        db_sess.commit()
+        redirect('/quizzes/success/delete')
+    else:
+        context['message'] = 'Вы не создатель этого вопроса'
+        return render_template('quizzes/quiz_delete.html', **context)
     return render_template('quizzes/quiz_delete.html', **context)
 
 
-@app.route('/quizzes/<int:pk>/edit')
-def quiz_edit(pk):
+@app.route('/quizzes/success/delete')
+def quiz_success_delete():
     context = {
-        'title': 'QUIZ_NAME + _edit'  # Replace title
+        'title': 'Успешное удаление'
     }
+    render_template('quizzes/quiz_success_delete.html')
+
+
+@app.route('/quizzes/<int:pk>/edit', methods=['GET', 'POST'])
+@login_required
+def quiz_edit(pk):
+    form = QuizEditForm()
+    db_sess = db_session.create_session()
+    quiz = db_sess.query(Quiz).filter(Quiz.id == pk)
+    context = {
+        'title': str(quiz.title) + 'edit'
+    }
+    if form.validate_on_submit():
+        if quiz and quiz.owner_id == current_user.id:
+            quiz.title = form.title.data
+            quiz.text = form.text.data
+            quiz.questions = dumps(form.pages)
+
+            db_sess.commit()
+        context['message'] = 'У вас нет доступа'
+        render_template('quizzes/quiz_edit.html', **context)
     render_template('quizzes/quiz_edit.html', **context)
 
 

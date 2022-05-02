@@ -37,5 +37,28 @@ class QuizCreateForm(FlaskForm):
     title = StringField('Title', validators=[DataRequired()])
     text = StringField('Description')
 
-    # Тут надо доделать
+    pages = []
+    for i in range(100):
+        ask = {
+            'question': StringField(f''),
+            'options': [StringField(f'Option-0-{i}'),
+                        StringField(f'Option-1-{i}'),
+                        StringField(f'Option-2-{i}'),
+                        StringField(f'Option-3-{i}')]
+        }
+        pages.append(ask)
 
+
+class QuizEditForm(FlaskForm):
+    title = StringField('Title')
+    text = StringField('Description')
+    pages = []
+    for i in range(100):
+        ask = {
+            'question': StringField(f''),
+            'options': [StringField(f'Option-0-{i}'),
+                        StringField(f'Option-1-{i}'),
+                        StringField(f'Option-2-{i}'),
+                        StringField(f'Option-3-{i}')]
+        }
+        pages.append(ask)
