@@ -19,7 +19,7 @@ class LoginForm(FlaskForm):
     username_or_email = StringField('Username or email',
                                     validators=[DataRequired()])
     password = PasswordField('Password', validators=[DataRequired()])
-    remember_me = BooleanField('Запомнить меня')
+    remember_me = BooleanField('remember me')
     submit = SubmitField('Log in')
 
 
@@ -31,3 +31,11 @@ class EditForm(FlaskForm):
     last_name = StringField('Last_name')
     first_name = StringField('First_name')
     submit = SubmitField('Edit')
+
+
+class QuizCreateForm(FlaskForm):
+    title = StringField('Title', validators=[DataRequired()])
+    text = StringField('Description')
+
+    # Тут надо доделать
+

@@ -11,8 +11,13 @@ class Quiz(SqlAlchemyBase, SerializerMixin):
     id = sqlalchemy.Column(sqlalchemy.Integer,
                            primary_key=True, autoincrement=True)
     title = sqlalchemy.Column(sqlalchemy.String, nullable=True)
-    content = sqlalchemy.Column(sqlalchemy.String, nullable=True)
-    user_id = sqlalchemy.Column(sqlalchemy.Integer,
-                                sqlalchemy.ForeignKey("users.id"))
+    text = sqlalchemy.Column(sqlalchemy.String, nullable=True)
+    owner_id = sqlalchemy.Column(sqlalchemy.Integer,
+                                 sqlalchemy.ForeignKey("user.id"),
+                                 nullable=True)
+    passers = sqlalchemy.Column(sqlalchemy.String, nullable=True)
+    questions = sqlalchemy.Column(sqlalchemy.String, nullable=True)
 
     user = orm.relation('User')
+
+# тут тоже можно изменить

@@ -124,6 +124,8 @@ def profile():
     return render_template('auth/profile.html', **context)
 
 
+#  Тут надо сделать создание
+
 @app.route('/quizzes/create')
 def quiz_create():
     context = {
