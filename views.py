@@ -73,6 +73,10 @@ def register():
         if db_sess.query(User).filter(User.email == form.email.data).first():
             context['message'] = "Такой пользователь уже есть"
             return render_template('auth/register.html', **context)
+        if db_sess.query(User).filter(
+                User.username == form.username.data).first():
+            context['message'] = "Такой пользователь уже есть"
+            return render_template('auth/register.html', **context)
         user = User(
             first_name=form.first_name.data,
             email=form.email.data,
