@@ -23,7 +23,7 @@ class QuizResource(Resource):
         session = db_session.create_session()
         quiz = session.query(Quiz).get(quiz_id)
         return jsonify({'quiz': quiz.to_dict(
-            only=('title', 'content', 'user_id'))})
+            only=('title', 'questions', 'user_id'))})
 
     def delete(self, quiz_id):
         abort_if_quiz_not_found(quiz_id)
@@ -39,14 +39,14 @@ class QuizListResource(Resource):
         session = db_session.create_session()
         quiz = session.query(Quiz).all()
         return jsonify({'quiz': [item.to_dict(
-            only=('title', 'content', 'user.name')) for item in quiz]})
+            only=('title', 'questions', 'user_id')) for item in quiz]})
 
     def post(self):
         args = parser.parse_args()
         session = db_session.create_session()
         quiz = Quiz(
             title=args['title'],
-            content=args['content'],
+            questions=args['content'],
             user_id=args['user_id']
         )
         session.add(quiz)
