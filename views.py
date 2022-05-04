@@ -151,7 +151,7 @@ def quiz_create():
             text=form.text.data,
             owner_id=current_user.id,
         )
-        attrs = [
+        questions = [
             [form.question1.data, [form.option_1_1.data, form.option_1_2.data,
                                    form.option_1_3.data,
                                    form.option_1_4.data]],
@@ -167,7 +167,7 @@ def quiz_create():
             [form.question5.data, [form.option_5_1.data, form.option_5_2.data,
                                    form.option_5_3.data,
                                    form.option_5_4.data]]]
-        quiz.questions = dumps(attrs)
+        quiz.questions = dumps(questions)
         quiz.answers = form.answers.data
         db_sess.add(quiz)
         db_sess.commit()
@@ -208,17 +208,37 @@ def quiz_success_delete():
 def quiz_edit(pk):
     form = QuizEditForm()
     db_sess = db_session.create_session()
-    quiz = db_sess.query(Quiz).filter(Quiz.id == pk)
+    quiz = db_sess.query(Quiz).filter(Quiz.id == pk).first()
     context = {
-        'title': str(quiz.title) + 'edit'
+        'form': form,
+        'title': 'quiz_edit',
     }
+    if not quiz:
+        abort(404)
+    context['title'] = str(quiz.title) + ' edit'
     if form.validate_on_submit():
-        if quiz and quiz.owner_id == current_user.id:
+        if quiz.owner_id == current_user.id:
             quiz.title = form.title.data
             quiz.text = form.text.data
-            quiz.questions = dumps(form.pages)
-
+            questions = [[form.question1.data,
+                          [form.option_1_1.data, form.option_1_2.data,
+                           form.option_1_3.data, form.option_1_4.data]],
+                         [form.question2.data,
+                          [form.option_2_1.data, form.option_2_2.data,
+                           form.option_2_3.data, form.option_2_4.data]],
+                         [form.question3.data,
+                          [form.option_3_1.data, form.option_3_2.data,
+                           form.option_3_3.data, form.option_3_4.data]],
+                         [form.question4.data,
+                          [form.option_4_1.data, form.option_4_2.data,
+                           form.option_4_3.data, form.option_4_4.data]],
+                         [form.question5.data,
+                          [form.option_5_1.data, form.option_5_2.data,
+                           form.option_5_3.data, form.option_5_4.data]]]
+            quiz.questions = dumps(questions)
+            quiz.answers = form.answers.data
             db_sess.commit()
+            return redirect(f'/quizzes/{quiz.id}/')
         context['message'] = 'У вас нет доступа'
         return render_template('quizzes/quiz_edit.html', **context)
     return render_template('quizzes/quiz_edit.html', **context)
@@ -235,6 +255,7 @@ def quiz_info(pk):
         abort(404)
     context['title'] = str(quiz.title)
     context['quiz'] = quiz
+    context['questions'] = loads(quiz.questions)
     return render_template('quizzes/quiz_info.html', **context)
 
 
