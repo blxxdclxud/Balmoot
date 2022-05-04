@@ -1,0 +1,7 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>{{ quiz.title }}</h1>
+    <h4>Ваши ответы {{ pass_stat }}</h4>
+    <h4>Правильные ответы {{ quiz.answers }}</h4>
+{% endblock %}

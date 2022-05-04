@@ -1,6 +1,6 @@
 <header>
     <nav class="navbar navbar-light bg-light">
-        <h1>Balmoot</h1>
+        <a href="/">Balmoot</a>
         {% if current_user.is_authenticated %}
             <a class="navbar-brand" href="/auth/profile">{{ current_user.username }}</a>
         {% else %}

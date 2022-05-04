@@ -1,15 +1,17 @@
 from json import dumps, loads
 
 from flask import Flask, app, render_template, redirect, abort
-from flask_login import LoginManager, login_user, login_required, logout_user, \
-    current_user
+from flask_login import LoginManager, login_user, login_required, \
+    logout_user, current_user
 from flask_restful import Api
 
 from data import db_session, quiz_resources
 from data.forms import LoginForm, RegisterForm, EditForm, QuizCreateForm, \
-    QuizEditForm
+    QuizEditForm, QuizPassingForm
 from data.quiz_db import Quiz
 from data.user_db import User
+
+passing = {}
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'SuPer-UltrA|m366a}_seKretNiy_kluCH'
@@ -270,18 +272,52 @@ def quizzes_list():
     return render_template('quizzes/quizzes_list.html', **context)
 
 
-@app.route('/quizzes/<int:pk>/passing/<int:qn>')  # Question num
+@app.route('/quizzes/<int:pk>/passing/<int:qn>', methods=['GET', 'POST'])
+@login_required
 def quiz_pass(pk, qn):
+    form = QuizPassingForm()
+    context = {
+        'form': form,
+        'title': 'passing'
+    }
     db_sess = db_session.create_session()
     quiz = db_sess.query(Quiz).filter(Quiz.id == pk).first()
+    if not quiz or qn > 4 or qn < 0:
+        abort(404)
+    if form.validate_on_submit():
+        if passing.get(current_user.id, False):
+            passing[current_user.id][pk][qn] = 0
+        else:
+            passing[current_user.id] = {pk: [0, 0, 0, 0, 0]}
+        passing[current_user.id][pk][qn] = form.response.data
+        if qn != 4:
+            return redirect(f'/quizzes/{pk}/passing/{qn + 1}')
+        return redirect(f'/quizzes/{pk}/passed')
+
     questions = loads(quiz.questions)
-    print(questions)
     quest = questions[qn]
-    context = {
-        'title': str(quiz.title),
-        'quest': quest
-    }
+    context['title'] = str(quiz.title)
+    context['quest'] = quest
     return render_template('quizzes/quiz_pass.html', **context)
+
+
+@app.route('/quizzes/<int:pk>/passed')
+@login_required
+def quiz_passed(pk):
+    context = {
+        'title': 'Quizz_passed',
+    }
+    db_sess = db_session.create_session()
+    quiz = db_sess.query(Quiz).get(pk)
+    if not quiz:
+        abort(404)
+    context['pass_stat'] = passing[current_user.id][pk]
+    context['title'] = quiz.title
+    context['quiz'] = quiz
+    quiz.passers = str(quiz.passers) + ' ' + str(current_user.id)
+    db_sess.commit()
+    return render_template('quizzes/quiz_passed.html', **context)
+
 
 
 def main():
