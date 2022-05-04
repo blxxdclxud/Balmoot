@@ -37,28 +37,71 @@ class QuizCreateForm(FlaskForm):
     title = StringField('Title', validators=[DataRequired()])
     text = StringField('Description')
 
-    pages = []
-    for i in range(100):
-        ask = {
-            'question': StringField(f''),
-            'options': [StringField(f'Option-0-{i}'),
-                        StringField(f'Option-1-{i}'),
-                        StringField(f'Option-2-{i}'),
-                        StringField(f'Option-3-{i}')]
-        }
-        pages.append(ask)
+    question1 = StringField('Question1')
+    option_1_1 = StringField('Option 1')
+    option_1_2 = StringField('Option 2')
+    option_1_3 = StringField('Option 3')
+    option_1_4 = StringField('Option 4')
+
+    question2 = StringField('Question2')
+    option_2_1 = StringField('Option 1')
+    option_2_2 = StringField('Option 2')
+    option_2_3 = StringField('Option 3')
+    option_2_4 = StringField('Option 4')
+
+    question3 = StringField('Question3')
+    option_3_1 = StringField('Option 1')
+    option_3_2 = StringField('Option 2')
+    option_3_3 = StringField('Option 3')
+    option_3_4 = StringField('Option 4')
+
+    question4 = StringField('Question4')
+    option_4_1 = StringField('Option 1')
+    option_4_2 = StringField('Option 2')
+    option_4_3 = StringField('Option 3')
+    option_4_4 = StringField('Option 4')
+
+    question5 = StringField('Question5')
+    option_5_1 = StringField('Option 1')
+    option_5_2 = StringField('Option 2')
+    option_5_3 = StringField('Option 3')
+    option_5_4 = StringField('Option 4')
+
+    submit = SubmitField('Create')
 
 
 class QuizEditForm(FlaskForm):
     title = StringField('Title')
     text = StringField('Description')
-    pages = []
-    for i in range(100):
-        ask = {
-            'question': StringField(f''),
-            'options': [StringField(f'Option-0-{i}'),
-                        StringField(f'Option-1-{i}'),
-                        StringField(f'Option-2-{i}'),
-                        StringField(f'Option-3-{i}')]
-        }
-        pages.append(ask)
+
+    question1 = StringField('Question1')
+    option_1_1 = StringField('Option 1')
+    option_1_2 = StringField('Option 2')
+    option_1_3 = StringField('Option 3')
+    option_1_4 = StringField('Option 4')
+
+    question2 = StringField('Question2')
+    option_2_1 = StringField('Option 1')
+    option_2_2 = StringField('Option 2')
+    option_2_3 = StringField('Option 3')
+    option_2_4 = StringField('Option 4')
+
+    question3 = StringField('Question3')
+    option_3_1 = StringField('Option 1')
+    option_3_2 = StringField('Option 2')
+    option_3_3 = StringField('Option 3')
+    option_3_4 = StringField('Option 4')
+
+    question4 = StringField('Question4')
+    option_4_1 = StringField('Option 1')
+    option_4_2 = StringField('Option 2')
+    option_4_3 = StringField('Option 3')
+    option_4_4 = StringField('Option 4')
+
+    question5 = StringField('Question5')
+    option_5_1 = StringField('Option 1')
+    option_5_2 = StringField('Option 2')
+    option_5_3 = StringField('Option 3')
+    option_5_4 = StringField('Option 4')
+
+    submit = SubmitField('Edit')
