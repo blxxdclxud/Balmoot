@@ -95,3 +95,64 @@ def user_delete(pk):
     db_sess.delete(user)
     db_sess.commit()
     return jsonify({'message': 'success'})
+
+
+@blueprint.route(
+    '/api/users/register/<str:username>/<str:email>/<str:password>'
+    '/<str:password2>/<str:first_name>/<str:last_name>', methods=['GET'])
+def user_creating_get(username, email, password, password2, first_name,
+                      last_name):
+    if password != password2:
+        return jsonify({'error': 'passwords do not match'})
+    db_sess = db_session.create_session()
+    if db_sess.query(User).filter(User.email == email).first():
+        return jsonify({'error': 'This email is busy'})
+    if db_sess.query(User).filter(User.username == username).first():
+        return jsonify({'error': 'This username is busy'})
+    user = User(
+        first_name=first_name,
+        email=email,
+        last_name=last_name,
+        username=username,
+    )
+    user.set_password(password)
+    db_sess.add(user)
+    db_sess.commit()
+    return jsonify(
+        {
+            'message': 'success'
+        }
+    )
+
+
+@blueprint.route('/api/users/create', methods=['POST'])
+def user_creating_post():
+    if not request.json:
+        return jsonify({'error': 'Empty request'})
+    elif not all(key in request.json for key in
+                 ['username', 'email', 'password', 'password2',
+                  'first_name', 'last_name']):
+        return jsonify({'error': 'Bad request'})
+    if request.json['password'] != request.json['password2']:
+        return jsonify({'error': 'passwords do not match'})
+    db_sess = db_session.create_session()
+    if db_sess.query(User).filter(User.email == request.json['email']).first():
+        return jsonify({'error': 'This email is busy'})
+    if db_sess.query(User).filter(
+            User.username == request.json['username']).first():
+        return jsonify({'error': 'This username is busy'})
+    user = User(
+        first_name=request.json['first_name'],
+        email=request.json['email'],
+        last_name=request.json['last_name'],
+        username=request.json['username'],
+    )
+    user.set_password(request.json['password'])
+    db_sess.add(user)
+    db_sess.commit()
+    return jsonify(
+        {
+            'user': user.to_dict(only=(
+                'id', 'first_name', 'last_name', 'username', 'email'))
+        }
+    )
