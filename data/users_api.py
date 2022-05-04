@@ -156,3 +156,37 @@ def user_creating_post():
                 'id', 'first_name', 'last_name', 'username', 'email'))
         }
     )
+
+
+@blueprint.route(
+    'api/users/edit/<int:pk>/<str:username>/<str:email>/<str:password>/'
+    '<str:password2>/<str:first_name>/<str:last_name>',
+    methods=['GET'])
+def user_edit_get(pk, username, email, password, password2, first_name,
+                  last_name):
+    if password != '0' and password != password2:
+        return jsonify({'error': 'passwords do not match'})
+    db_sess = db_session.create_session()
+    user = db_sess.query(User).get(pk)
+    if not user:
+        return jsonify({'error': 'Not found'})
+    if db_sess.query(User).filter(User.email == email).first():
+        return jsonify({'error': 'This email is busy'})
+    elif email != '0':
+        user.email = email
+    if db_sess.query(User).filter(User.username == username).first():
+        return jsonify({'error': 'This username is busy'})
+    elif username != '0':
+        user.username = username
+    if first_name != '0':
+        user.first_name = first_name
+    if last_name != '0':
+        user.last_name = last_name
+    if password != '0':
+        user.set_password(password)
+    db_sess.commit()
+    return jsonify(
+        {
+            'message': 'success'
+        }
+    )
