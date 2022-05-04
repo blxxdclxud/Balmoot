@@ -314,7 +314,10 @@ def quiz_passed(pk):
     context['pass_stat'] = passing[current_user.id][pk]
     context['title'] = quiz.title
     context['quiz'] = quiz
-    quiz.passers = str(quiz.passers) + ' ' + str(current_user.id)
+    if not quiz.passers:
+        quiz.passers = str(current_user.id)
+    if str(current_user.id) not in quiz.passers.split():
+        quiz.passers = str(quiz.passers) + ' ' + str(current_user.id)
     db_sess.commit()
     return render_template('quizzes/quiz_passed.html', **context)
 
