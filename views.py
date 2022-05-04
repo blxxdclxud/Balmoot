@@ -319,7 +319,6 @@ def quiz_passed(pk):
     return render_template('quizzes/quiz_passed.html', **context)
 
 
-
 def main():
     db_session.global_init("db/balmoot.db")
     app.debug = True
