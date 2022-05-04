@@ -15,7 +15,7 @@ class Quiz(SqlAlchemyBase, SerializerMixin):
     questions = sqlalchemy.Column(sqlalchemy.String, nullable=True)
 
     owner_id = sqlalchemy.Column(sqlalchemy.Integer,
-                                 sqlalchemy.ForeignKey("user.id"),
+                                 sqlalchemy.ForeignKey("users.id"),
                                  nullable=True)
 
     passers = sqlalchemy.Column(sqlalchemy.String, nullable=True)
