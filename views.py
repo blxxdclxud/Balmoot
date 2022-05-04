@@ -184,7 +184,7 @@ def quiz_delete(pk):
     quiz = db_sess.query(Quiz).filter(Quiz.id == pk).first()
     if not quiz:
         context['message'] = 'Такой Quiz не найден'
-        return render_template('quizzes/quizz_delete.html', **context)
+        return render_template('quizzes/quiz_delete.html', **context)
     if quiz and quiz.owner_id == current_user.id:
         db_sess.delete(quiz)
         db_sess.commit()
@@ -199,7 +199,7 @@ def quiz_success_delete():
     context = {
         'title': 'Успешное удаление'
     }
-    render_template('quizzes/quiz_success_delete.html')
+    return render_template('quizzes/quiz_success_delete.html')
 
 
 @app.route('/quizzes/<int:pk>/edit', methods=['GET', 'POST'])
@@ -228,10 +228,11 @@ def quiz_info(pk):
     db_sess = db_session.create_session()
     quiz = db_sess.query(Quiz).filter(Quiz.id == pk).first()
     context = {
-        'title': str(quiz.title),
+        'title': 'quiz_info',
     }
     if not quiz:
         abort(404)
+    context['title'] = str(quiz.title)
     context['quiz'] = quiz
     return render_template('quizzes/quiz_info.html', **context)
 
