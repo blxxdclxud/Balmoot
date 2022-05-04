@@ -67,6 +67,8 @@ class QuizCreateForm(FlaskForm):
     option_5_3 = StringField('Option 3')
     option_5_4 = StringField('Option 4')
 
+    answers = StringField('Ответы (писать через пробел)')
+
     submit = SubmitField('Create')
 
 

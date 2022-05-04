@@ -168,6 +168,7 @@ def quiz_create():
                                    form.option_5_3.data,
                                    form.option_5_4.data]]]
         quiz.questions = dumps(attrs)
+        quiz.answers = form.answers.data
         db_sess.add(quiz)
         db_sess.commit()
         return redirect(f'/quizzes/{quiz.id}/')
