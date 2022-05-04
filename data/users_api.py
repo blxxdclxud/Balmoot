@@ -84,3 +84,14 @@ def user_logining_post():
             'message': 'success'
         }
     )
+
+
+@blueprint.route('/api/users/<int:pk>', methods=['DELETE'])
+def user_delete(pk):
+    db_sess = db_session.create_session()
+    user = db_sess.query(User).get(pk)
+    if not user:
+        return jsonify({'error': 'Not found'})
+    db_sess.delete(user)
+    db_sess.commit()
+    return jsonify({'message': 'success'})

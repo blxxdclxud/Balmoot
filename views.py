@@ -228,7 +228,7 @@ def quizzes_list():
     db_sess = db_session.create_session()
     quizzes = db_sess.query(Quiz).all()
     context['quizzes'] = quizzes
-    return render_template('quizzes/quizzes_lis.html', **context)
+    return render_template('quizzes/quizzes_list.html', **context)
 
 
 @app.route('/quizzes/<int:pk>/passing/<int:qn>')  # Question num
