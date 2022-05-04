@@ -131,7 +131,7 @@ def profile():
     return render_template('auth/profile.html', **context)
 
 
-@app.route('/quizzes/create')
+@app.route('/quizzes/create', methods=['GET', 'POST'])
 @login_required
 def quiz_create():
     form = QuizCreateForm()
@@ -145,16 +145,33 @@ def quiz_create():
             Quiz.title == form.title.data).first()
         if quiz:
             context['message'] = 'Quiz с таким названием уже существует'
-            render_template('quizzes/quiz_create.html', **context)
+            return render_template('quizzes/quiz_create.html', **context)
         quiz = Quiz(
             title=form.title.data,
             text=form.text.data,
             owner_id=current_user.id,
         )
-        quiz.questions = dumps(form.pages)
+        attrs = [
+            [form.question1.data, [form.option_1_1.data, form.option_1_2.data,
+                                   form.option_1_3.data,
+                                   form.option_1_4.data]],
+            [form.question2.data, [form.option_2_1.data, form.option_2_2.data,
+                                   form.option_2_3.data,
+                                   form.option_2_4.data]],
+            [form.question3.data, [form.option_3_1.data, form.option_3_2.data,
+                                   form.option_3_3.data,
+                                   form.option_3_4.data]],
+            [form.question4.data, [form.option_4_1.data, form.option_4_2.data,
+                                   form.option_4_3.data,
+                                   form.option_4_4.data]],
+            [form.question5.data, [form.option_5_1.data, form.option_5_2.data,
+                                   form.option_5_3.data,
+                                   form.option_5_4.data]]]
+        quiz.questions = dumps(attrs)
+        db_sess.add(quiz)
         db_sess.commit()
-        redirect(f'/quizzes/{quiz.id}/')
-    render_template('quizzes/quiz_create.html', **context)
+        return redirect(f'/quizzes/{quiz.id}/')
+    return render_template('quizzes/quiz_create.html', **context)
 
 
 @app.route('/quizzes/<int:pk>/delete', methods=['GET', 'POST'])
@@ -171,11 +188,10 @@ def quiz_delete(pk):
     if quiz and quiz.owner_id == current_user.id:
         db_sess.delete(quiz)
         db_sess.commit()
-        redirect('/quizzes/success/delete')
+        return redirect('/quizzes/success/delete')
     else:
         context['message'] = 'Вы не создатель этого вопроса'
         return render_template('quizzes/quiz_delete.html', **context)
-    return render_template('quizzes/quiz_delete.html', **context)
 
 
 @app.route('/quizzes/success/delete')
@@ -203,8 +219,8 @@ def quiz_edit(pk):
 
             db_sess.commit()
         context['message'] = 'У вас нет доступа'
-        render_template('quizzes/quiz_edit.html', **context)
-    render_template('quizzes/quiz_edit.html', **context)
+        return render_template('quizzes/quiz_edit.html', **context)
+    return render_template('quizzes/quiz_edit.html', **context)
 
 
 @app.route('/quizzes/<int:pk>/')
@@ -242,7 +258,7 @@ def quiz_pass(pk, qn):
         'title': str(quiz.title),
         'quest': quest
     }
-    render_template('quizzes/quiz_pass.html', **context)
+    return render_template('quizzes/quiz_pass.html', **context)
 
 
 def main():

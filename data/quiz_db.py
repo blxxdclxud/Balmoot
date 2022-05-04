@@ -22,4 +22,3 @@ class Quiz(SqlAlchemyBase, SerializerMixin):
 
     user = orm.relation('User')
 
-# тут тоже можно изменить
