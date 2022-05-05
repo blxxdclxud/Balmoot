@@ -28,10 +28,10 @@ class LoginForm(FlaskForm):
 class EditForm(FlaskForm):
     username = StringField('Username')
     email = EmailField('Enter your email')
+    first_name = StringField('Name')
+    last_name = StringField('Surname')
     password = PasswordField('New password')
     password_again = PasswordField('Repeat password')
-    first_name = StringField('New name')
-    last_name = StringField('New surname')
     submit = SubmitField('Edit')
 
 
@@ -40,37 +40,37 @@ class QuizCreateForm(FlaskForm):
     text = StringField('Description')
     picture = FileField('Add a picture')
 
-    question1 = StringField('Question1', validators=[DataRequired()])
+    question1 = StringField('Question 1', validators=[DataRequired()])
     option_1_1 = StringField('Option 1', validators=[DataRequired()])
     option_1_2 = StringField('Option 2', validators=[DataRequired()])
     option_1_3 = StringField('Option 3', validators=[DataRequired()])
     option_1_4 = StringField('Option 4', validators=[DataRequired()])
 
-    question2 = StringField('Question2', validators=[DataRequired()])
+    question2 = StringField('Question 2', validators=[DataRequired()])
     option_2_1 = StringField('Option 1', validators=[DataRequired()])
     option_2_2 = StringField('Option 2', validators=[DataRequired()])
     option_2_3 = StringField('Option 3', validators=[DataRequired()])
     option_2_4 = StringField('Option 4', validators=[DataRequired()])
 
-    question3 = StringField('Question3', validators=[DataRequired()])
+    question3 = StringField('Question 3', validators=[DataRequired()])
     option_3_1 = StringField('Option 1', validators=[DataRequired()])
     option_3_2 = StringField('Option 2', validators=[DataRequired()])
     option_3_3 = StringField('Option 3', validators=[DataRequired()])
     option_3_4 = StringField('Option 4', validators=[DataRequired()])
 
-    question4 = StringField('Question4', validators=[DataRequired()])
+    question4 = StringField('Question 4', validators=[DataRequired()])
     option_4_1 = StringField('Option 1', validators=[DataRequired()])
     option_4_2 = StringField('Option 2', validators=[DataRequired()])
     option_4_3 = StringField('Option 3', validators=[DataRequired()])
     option_4_4 = StringField('Option 4', validators=[DataRequired()])
 
-    question5 = StringField('Question5', validators=[DataRequired()])
+    question5 = StringField('Question 5', validators=[DataRequired()])
     option_5_1 = StringField('Option 1', validators=[DataRequired()])
     option_5_2 = StringField('Option 2', validators=[DataRequired()])
     option_5_3 = StringField('Option 3', validators=[DataRequired()])
     option_5_4 = StringField('Option 4', validators=[DataRequired()])
 
-    answers = StringField('Ответы (писать через пробел)',
+    answers = StringField('Answers (write divided by space)',
                           validators=[DataRequired()])
 
     submit = SubmitField('Create')
@@ -81,37 +81,37 @@ class QuizEditForm(FlaskForm):
     text = StringField('Description')
     picture = FileField('Add a picture')
 
-    question1 = StringField('Question1')
+    question1 = StringField('Question 1')
     option_1_1 = StringField('Option 1')
     option_1_2 = StringField('Option 2')
     option_1_3 = StringField('Option 3')
     option_1_4 = StringField('Option 4')
 
-    question2 = StringField('Question2')
+    question2 = StringField('Question 2')
     option_2_1 = StringField('Option 1')
     option_2_2 = StringField('Option 2')
     option_2_3 = StringField('Option 3')
     option_2_4 = StringField('Option 4')
 
-    question3 = StringField('Question3')
+    question3 = StringField('Question 3')
     option_3_1 = StringField('Option 1')
     option_3_2 = StringField('Option 2')
     option_3_3 = StringField('Option 3')
     option_3_4 = StringField('Option 4')
 
-    question4 = StringField('Question4')
+    question4 = StringField('Question 4')
     option_4_1 = StringField('Option 1')
     option_4_2 = StringField('Option 2')
     option_4_3 = StringField('Option 3')
     option_4_4 = StringField('Option 4')
 
-    question5 = StringField('Question5')
+    question5 = StringField('Question 5')
     option_5_1 = StringField('Option 1')
     option_5_2 = StringField('Option 2')
     option_5_3 = StringField('Option 3')
     option_5_4 = StringField('Option 4')
 
-    answers = StringField('Ответы (писать через пробел)')
+    answers = StringField('Answers (write divided by space)')
 
     submit = SubmitField('Edit')
 
@@ -119,4 +119,4 @@ class QuizEditForm(FlaskForm):
 class QuizPassingForm(FlaskForm):
     response = RadioField('Answer',
                           choices=[(1, ''), (2, ''), (3, ''), (4, '')])
-    submit = SubmitField('Ответить')
+    submit = SubmitField('Reply')
