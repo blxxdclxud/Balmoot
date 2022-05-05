@@ -19,12 +19,10 @@ def get_user_range(start, end):
         User.id < end).all()
     if not users:
         return jsonify({'error': 'Not found'})
-    return jsonify(
-        {
-            'users': users.to_dict(only=(
-                'id', 'first_name', 'last_name', 'username', 'email'))
-        }
-    )
+    data = {'users': [
+        i.to_dict(only=('id', 'first_name', 'last_name', 'username', 'email'))
+        for i in users]}
+    return jsonify(data)
 
 
 @blueprint.route('/api/users/<int:pk>/', methods=['GET'])
@@ -41,7 +39,7 @@ def get_user(pk):
     )
 
 
-@blueprint.route('/api/users/login/<str:login>/<str:password>',
+@blueprint.route('/api/users/login/<string:login>/<string:password>',
                  methods=['GET'])
 def user_logining_get(login, password):
     db_sess = db_session.create_session()
@@ -98,8 +96,9 @@ def user_delete(pk):
 
 
 @blueprint.route(
-    '/api/users/register/<str:username>/<str:email>/<str:password>'
-    '/<str:password2>/<str:first_name>/<str:last_name>', methods=['GET'])
+    '/api/users/register/<string:username>/<string:email>/<string:password>'
+    '/<string:password2>/<string:first_name>/<string:last_name>',
+    methods=['GET'])
 def user_creating_get(username, email, password, password2, first_name,
                       last_name):
     if password != password2:
