@@ -1,11 +1,16 @@
 {% extends "base.html" %}
 
+<head>
+    <script src="https://kit.fontawesome.com/8ff214b81c.js" crossorigin="anonymous"></script>
+</head>
+
 {% block content %}
     <h1>Quiz list</h1>
+    <i class="fa-solid fa-circle-plus"></i>
 
     {% for quiz in quizzes %}
-        <h3>quiz.title</h3>
-        <a href="/quizzes/{{ quiz.id }}">Info</a>
+        <h3>{{ quiz.title }}</h3>
+        <a class="btn btn-primary" href="/quizzes/{{ quiz.id }}">Info</a>
         <h1>--------</h1>
     {% endfor %}
 {% endblock %}
