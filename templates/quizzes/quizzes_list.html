@@ -6,9 +6,7 @@
     {% for quiz in quizzes %}
         <nav>
             <h3>{{ quiz.title }}</h3>
-            <a class="btn btn-primary custom" href="/quizzes/{{ quiz.id }}">Info</a>
-            <a class="btn btn-primary custom" href="/quizzes/{{ quiz.id }}/edit">Edit</a>
-            <a class="btn btn-primary custom" href="/quizzes/{{ quiz.id }}/delete">Delete</a>
+            <a class="btn btn-primary custom" href="/quizzes/{{ quiz.id }}">Info</a
             <a class="btn btn-primary custom" href="/quizzes/{{ quiz.id }}/passing/1">Pass</a>
         </nav>
         <h1>----------</h1>
