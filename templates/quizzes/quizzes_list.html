@@ -4,7 +4,7 @@
     <h1>Quiz list</h1>
 
     {% for quiz in quizzes %}
-        <nav>
+        <nav style="margin-top: 20px; margin-bottom: 20px">
             <h3>{{ quiz.title }}</h3>
             <a class="btn btn-primary custom" href="/quizzes/{{ quiz.id }}">Info</a>
             <a class="btn btn-primary custom" href="/quizzes/{{ quiz.id }}/passing/1">Pass</a>
