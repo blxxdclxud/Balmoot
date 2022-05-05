@@ -12,6 +12,7 @@ class Quiz(SqlAlchemyBase, SerializerMixin):
                            primary_key=True, autoincrement=True)
     title = sqlalchemy.Column(sqlalchemy.String, nullable=True)
     text = sqlalchemy.Column(sqlalchemy.String, nullable=True)
+    picture_path = sqlalchemy.Column(sqlalchemy.String, nullable=True)
     questions = sqlalchemy.Column(sqlalchemy.String, nullable=True)
     answers = sqlalchemy.Column(sqlalchemy.String, nullable=True)
 

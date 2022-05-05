@@ -5,6 +5,8 @@
     <section class="info">
         <h3>Title: {{ quiz.title }}</h3>
         <h4>Text: {{ quiz.text }}</h4>
+        <img class="image" src="../../{{ quiz.picture_path }}" alt="Quiz has not a picture">
+
         <ul class="list">
             <li>Question 1: {{ questions[0][0] }}</li>
             <li>Question 2: {{ questions[1][0] }}</li>
@@ -14,3 +16,4 @@
         </ul>
     </section>
 {% endblock %}
+
