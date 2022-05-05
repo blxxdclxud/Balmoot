@@ -88,7 +88,7 @@ def register():
         user.set_password(form.password.data)
         db_sess.add(user)
         db_sess.commit()
-        return redirect('/auth/login')
+        return redirect('/')
     return render_template('auth/register.html', **context)
 
 
