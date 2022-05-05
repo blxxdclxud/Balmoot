@@ -69,7 +69,7 @@ class QuizCreateForm(FlaskForm):
     option_5_3 = StringField('Option 3', validators=[DataRequired()])
     option_5_4 = StringField('Option 4', validators=[DataRequired()])
 
-    answers = StringField('Ответы (писать через пробел)',
+    answers = StringField('Answers (via spaces)',
                           validators=[DataRequired()])
 
     submit = SubmitField('Create')

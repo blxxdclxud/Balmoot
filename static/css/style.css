@@ -3,7 +3,7 @@ body {
     font-size: 16px;
     line-height: 20px;
     color: #212121;
-    background: #f0dfc8;
+    background: #ece7e4;
 }
 
 p {
@@ -17,12 +17,45 @@ h1 {
     text-align: center;
 }
 
+h3 {
+    display: inline-block;
+    padding-right: 60px;
+}
+
+.list {
+    padding: 0;
+    list-style: none;
+}
+
+.list li {
+    white-space: pre-wrap;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 200;
+}
+
+.info {
+    padding-left: 20%;
+    padding-top: 40px;
+}
+
+.list li {
+    margin-bottom: 15px;
+    padding-left: 20px;
+    border-left: 20px solid #e98074;
+    color: #333;
+}
+
+.custom {
+    position: absolute;
+}
+
 .block {
     position: absolute;
     text-align: center;
     width: 100%;
     overflow: hidden;
-    border-bottom: 5px dotted #000;
+    border-bottom: 2px ridge rgba(0, 0, 116, 0.4);
 }
 
 .footer {
@@ -41,6 +74,8 @@ h1 {
 
 .btn {
     font-family: 'Roboto Condensed', sans-serif;
+    border-radius: 12px;
+    border: none;
     text-transform: uppercase;
     padding: 10px 0 11px;
     width: 128px;
@@ -54,36 +89,69 @@ h1 {
     box-shadow: 0 5px 11px rgb(0, 0, 0);
 }
 
-.btn:focus,
-.btn:active {
-    outline: 0 !important;
-}
-
 .btn-success {
-    background: #15BA8C;
+    background: #ff9e79;
 }
 
 .btn-primary {
-    background: #398FF5;
+    background: #7997ff;
 }
 
-.btn-success:active {
-    background-color: #9fcc6b;
-    background-color: rgba(139, 195, 74, 0.8);
+.btn-danger {
+    background-color: #f58251;
 }
 
-.btn-info:active {
-    background-color: #32b7f3;
-    background-color: rgba(3, 169, 244, 0.8);
+.btn-success:hover {
+    background-color: #ff7b47;
 }
 
-.btn-primary:active {
+.btn-primary:hover {
 	background-color: #6270c0;
-	background-color: rgba(63,81,181,0.8);
 }
 
-.btn-danger:active {
-	background-color: #f3655b;
-	background-color: rgba(244,67,54,0.8);
+.btn-danger:hover {
+	background-color: #ff7b47;
 }
 
+.btn_press {
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    border: none;
+    background-color: transparent;
+    position: absolute;
+    color: #e04000;
+}
+
+@keyFrames wave {
+    from {
+        background-position: left 0 top 0;
+    }
+    to {
+        background-position: left 1100px top 0;
+    }
+}
+
+.main {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+h5 {
+    text-align: center;
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    transform: translate(0, -50%);
+    font: bold 100pt Axon;
+    color: rgba(0, 0, 116, 0.4);
+    background: url("/../static/img/waves.png");
+    -webkit-background-clip: text;
+    animation: wave 7s infinite;
+}
+
+.hd {
+    margin-top: 10px;
+}
