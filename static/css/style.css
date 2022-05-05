@@ -58,8 +58,15 @@ h3 {
     border-bottom: 2px ridge rgba(0, 0, 116, 0.4);
 }
 
-.footer {
-    background: #e7c697;
+footer {
+    background: #b0b7c6;
+    height: 20px;
+    margin-top: -80px;
+}
+
+.foo {
+    font-size: 15px;
+    text-align: right;
 }
 
 .text-center {
