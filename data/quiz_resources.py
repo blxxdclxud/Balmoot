@@ -1,5 +1,5 @@
 from flask import jsonify
-from flask_restful import reqparse, abort, Resource
+from flask_restful import reqparse, abort, Resource, Api
 
 from data import db_session
 from data.quiz_db import Quiz
