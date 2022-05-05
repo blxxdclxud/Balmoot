@@ -163,11 +163,12 @@ def quiz_create():
         if not os.path.exists(directory):
             os.mkdir(directory)
         f = form.picture.data
-        im = Image.open(BytesIO(f.read()))
-        im.save(os.getcwd().replace('\\', '/') +
-                f"/static/img/users_pictures/quizz_{quiz.title}_picture.png")
-        quiz.picture_path = \
-            f"/static/img/users_pictures/quizz_{quiz.title}_picture.png"
+        if f:
+            im = Image.open(BytesIO(f.read()))
+            im.save(os.getcwd().replace('\\', '/') +
+                    f"/static/img/users_pictures/quizz_{quiz.title}_picture.png")
+            quiz.picture_path = \
+                f"/static/img/users_pictures/quizz_{quiz.title}_picture.png"
         questions = [
             [form.question1.data, [form.option_1_1.data, form.option_1_2.data,
                                    form.option_1_3.data,
@@ -319,8 +320,8 @@ def quiz_pass(pk, qn):
     if not quiz or qn > 4 or qn < 0:
         abort(404)
     if form.validate_on_submit():
-        if passing.get(current_user.id, False):
-            passing[str(current_user.id)][str(pk)][qn] = 0
+        if passing.get(str(current_user.id), False):
+            passing[str(current_user.id)][str(pk)][qn] = form.response.data
         else:
             passing[str(current_user.id)] = {str(pk): [0, 0, 0, 0, 0]}
         passing[str(current_user.id)][str(pk)][qn] = form.response.data
