@@ -10,8 +10,11 @@ from data.forms import LoginForm, RegisterForm, EditForm, QuizCreateForm, \
     QuizEditForm, QuizPassingForm
 from data.quiz_db import Quiz
 from data.user_db import User
+from json import loads, dumps
 
-passing = {}
+
+with open('passers.json') as file:
+    passing = loads(file.read())
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'SuPer-UltrA|m366a}_seKretNiy_kluCH'
@@ -286,10 +289,10 @@ def quiz_pass(pk, qn):
         abort(404)
     if form.validate_on_submit():
         if passing.get(current_user.id, False):
-            passing[current_user.id][pk][qn] = 0
+            passing[str(current_user.id)][str(pk)][qn] = 0
         else:
-            passing[current_user.id] = {pk: [0, 0, 0, 0, 0]}
-        passing[current_user.id][pk][qn] = form.response.data
+            passing[str(current_user.id)] = {str(pk): [0, 0, 0, 0, 0]}
+        passing[str(current_user.id)][str(pk)][qn] = form.response.data
         if qn != 4:
             return redirect(f'/quizzes/{pk}/passing/{qn + 1}')
         return redirect(f'/quizzes/{pk}/passed')
@@ -311,7 +314,9 @@ def quiz_passed(pk):
     quiz = db_sess.query(Quiz).get(pk)
     if not quiz:
         abort(404)
-    context['pass_stat'] = passing[current_user.id][pk]
+    with open('passers.json', 'w') as file:
+        file.write(dumps(passing))
+    context['pass_stat'] = passing[str(current_user.id)][str(pk)]
     context['title'] = quiz.title
     context['quiz'] = quiz
     if not quiz.passers:
