@@ -86,4 +86,8 @@ h1 {
 	background-color: #f3655b;
 	background-color: rgba(244,67,54,0.8);
 }
+.image{
+    height: 200px;
+    width: auto;
+}
 
