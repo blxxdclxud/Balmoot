@@ -2,6 +2,8 @@
 Проект написанный на _Flask_, выполненный в рамках программы образовательного проекта 
 _"Яндекс.Лицей"_
 
+Презентация: https://www.canva.com/design/DAE_1NEqDqI/t7JmOb2hb74e6FSqRVXd_A/view?utm_content=DAE_1NEqDqI&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton
+
 ## Описание
 
 Проект представляет собой сайт на котором вы можете создавать квизы и делиться своими _тестами_ с другими пользователями.
