@@ -1,10 +1,10 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <h1>{{ current_user.first_name }}</h1>
-    <h2>{{ current_user.last_name }}</h2>
+    <h1>Edit your profile</h1>
+    <h2>Name: {{ current_user.first_name }}</h2>
+    <h2>Surname: {{ current_user.last_name }}</h2>
     <br>
-    <h3>Edit your profile</h3>
     <form action="" method="post">
         {{ form.hidden_tag() }}
         {% for i in form%}
