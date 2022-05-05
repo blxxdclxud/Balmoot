@@ -8,7 +8,7 @@ from flask_login import LoginManager, login_user, login_required, \
     logout_user, current_user
 from flask_restful import Api
 
-from data import db_session, quiz_resources
+from data import db_session, quiz_resources, quiz_api, users_api
 from data.forms import LoginForm, RegisterForm, EditForm, QuizCreateForm, \
     QuizEditForm, QuizPassingForm
 from data.quiz_db import Quiz
@@ -361,10 +361,11 @@ def quiz_passed(pk):
 
 def main():
     directory = os.path.join(os.getcwd(), 'db')
+    app.register_blueprint(users_api.blueprint)
+    app.register_blueprint(quiz_api.blueprint)
     if not os.path.exists(directory):
         os.mkdir(directory)
     db_session.global_init("db/balmoot.db")
     app.debug = True
     port = int(os.environ.get("PORT", 5000))
     app.run(host='0.0.0.0', port=port)
-
