@@ -20,8 +20,8 @@ api = Api(app)
 login_manager = LoginManager()
 login_manager.init_app(app)
 
-api.add_resource(quiz_resources.QuizListResource, '/api/quiz/')
-api.add_resource(quiz_resources.QuizResource, '/api/quiz/<int:quiz_id>')
+api.add_resource(quiz_resources.QuizListResource, '/api/v2/news')
+api.add_resource(quiz_resources.QuizResource, '/api/v2/news/<int:news_id>')
 
 
 @app.route('/')
@@ -88,7 +88,7 @@ def register():
         user.set_password(form.password.data)
         db_sess.add(user)
         db_sess.commit()
-        return redirect('/')
+        return redirect('/auth/login')
     return render_template('auth/register.html', **context)
 
 
