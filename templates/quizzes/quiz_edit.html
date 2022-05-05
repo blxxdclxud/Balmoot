@@ -1,5 +1,22 @@
-{% extends "base.html" %}
 
 {% block content %}
     <h1>Quiz edit</h1>
+    <form action="" method="post">
+        {{ form.hidden_tag() }}
+        {% for i in form%}
+        {% if i.name != "submit" and i.name != "csrf_token" %}
+            <p>
+                {{ i.label }}<br>
+                {{ i(class="form-control") }}<br>
+                {% for error in i.errors %}
+                    <p class="alert alert-danger" role="alert">
+                        {{ error }}
+                    </p>
+                {% endfor %}
+            </p>
+        {% endif %}
+    {% endfor %}
+        <p>{{ form.submit(type="submit", class="btn btn-primary") }}</p>
+        <div class="alert alert-danger">{{ message }}</div>
+    </form>
 {% endblock %}
