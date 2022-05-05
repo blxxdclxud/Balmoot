@@ -163,11 +163,12 @@ def quiz_create():
         if not os.path.exists(directory):
             os.mkdir(directory)
         f = form.picture.data
-        im = Image.open(BytesIO(f.read()))
-        im.save(os.getcwd().replace('\\', '/') +
-                f"/static/img/users_pictures/quizz_{quiz.title}_picture.png")
-        quiz.picture_path = \
-            f"/static/img/users_pictures/quizz_{quiz.title}_picture.png"
+        if f:
+            im = Image.open(BytesIO(f.read()))
+            im.save(os.getcwd().replace('\\', '/') +
+                    f"/static/img/users_pictures/quizz_{quiz.title}_picture.png")
+            quiz.picture_path = \
+                f"/static/img/users_pictures/quizz_{quiz.title}_picture.png"
         questions = [
             [form.question1.data, [form.option_1_1.data, form.option_1_2.data,
                                    form.option_1_3.data,
