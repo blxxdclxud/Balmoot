@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField, BooleanField, \
-    RadioField
+    RadioField, FileField
 from wtforms.fields import EmailField
 from wtforms.validators import DataRequired, Length
 
@@ -38,6 +38,7 @@ class EditForm(FlaskForm):
 class QuizCreateForm(FlaskForm):
     title = StringField('Title', validators=[DataRequired()])
     text = StringField('Description')
+    picture = FileField('Add a picture')
 
     question1 = StringField('Question1', validators=[DataRequired()])
     option_1_1 = StringField('Option 1', validators=[DataRequired()])
@@ -78,6 +79,7 @@ class QuizCreateForm(FlaskForm):
 class QuizEditForm(FlaskForm):
     title = StringField('Title')
     text = StringField('Description')
+    picture = FileField('Add a picture')
 
     question1 = StringField('Question1')
     option_1_1 = StringField('Option 1')
@@ -112,6 +114,7 @@ class QuizEditForm(FlaskForm):
     answers = StringField('Ответы (писать через пробел)')
 
     submit = SubmitField('Edit')
+
 
 class QuizPassingForm(FlaskForm):
     response = RadioField('Answer',

@@ -1,5 +1,8 @@
-from json import dumps, loads
+from io import BytesIO
+from json import loads, dumps
+import os
 
+from PIL import Image
 from flask import Flask, app, render_template, redirect, abort
 from flask_login import LoginManager, login_user, login_required, \
     logout_user, current_user
@@ -10,8 +13,6 @@ from data.forms import LoginForm, RegisterForm, EditForm, QuizCreateForm, \
     QuizEditForm, QuizPassingForm
 from data.quiz_db import Quiz
 from data.user_db import User
-from json import loads, dumps
-
 
 with open('passers.json') as file:
     passing = loads(file.read())
@@ -156,6 +157,15 @@ def quiz_create():
             text=form.text.data,
             owner_id=current_user.id,
         )
+        directory = os.path.join(f'{os.getcwd()}/static/img/', 'users_pictures')
+        if not os.path.exists(directory):
+            os.mkdir(directory)
+        f = form.picture.data
+        im = Image.open(BytesIO(f.read()))
+        im.save(os.getcwd().replace('\\', '/') +
+                f"/static/img/users_pictures/quizz_{quiz.title}_picture.png")
+        quiz.picture_path = \
+            f"/static/img/users_pictures/quizz_{quiz.title}_picture.png"
         questions = [
             [form.question1.data, [form.option_1_1.data, form.option_1_2.data,
                                    form.option_1_3.data,
@@ -242,6 +252,17 @@ def quiz_edit(pk):
                            form.option_5_3.data, form.option_5_4.data]]]
             quiz.questions = dumps(questions)
             quiz.answers = form.answers.data
+            directory = os.path.join(f'{os.getcwd()}/static/img/',
+                                     'users_pictures')
+            if not os.path.exists(directory):
+                os.mkdir(directory)
+            f = form.picture.data
+            im = Image.open(BytesIO(f.read()))
+            im.save(
+                os.getcwd().replace('\\', '/') +
+                f"/static/img/users_pictures/quizz_{quiz.title}_picture.png")
+            quiz.picture_path = \
+                f"/static/img/users_pictures/quizz_{quiz.title}_picture.png"
             db_sess.commit()
             return redirect(f'/quizzes/{quiz.id}/')
         context['message'] = 'У вас нет доступа'
