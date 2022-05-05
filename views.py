@@ -358,6 +358,9 @@ def quiz_passed(pk):
 
 
 def main():
+    directory = os.path.join(os.getcwd(), 'db')
+    if not os.path.exists(directory):
+        os.mkdir(directory)
     db_session.global_init("db/balmoot.db")
     app.debug = True
     app.run(port=8080, host='127.0.0.1')
