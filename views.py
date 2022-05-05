@@ -1,6 +1,6 @@
+import os
 from io import BytesIO
 from json import loads, dumps
-import os
 
 from PIL import Image
 from flask import Flask, app, render_template, redirect, abort
@@ -127,11 +127,12 @@ def profile():
             return render_template('auth/profile.html', **context)
 
         if user:
-            user.username = form.username.data
-            user.email = form.email.data
-            user.last_name = form.last_name.data
-            user.first_name = form.first_name.data
-            user.set_password(form.password.data)
+            user.username = form.username.data or user.username
+            user.email = form.email.data or user.email
+            user.last_name = form.last_name.data or user.last_name
+            user.first_name = form.first_name.data or user.first_name
+            if form.password.data:
+                user.set_password(form.password.data)
             db_sess.commit()
             return redirect('/auth/profile')
     return render_template('auth/profile.html', **context)
@@ -157,7 +158,8 @@ def quiz_create():
             text=form.text.data,
             owner_id=current_user.id,
         )
-        directory = os.path.join(f'{os.getcwd()}/static/img/', 'users_pictures')
+        directory = os.path.join(f'{os.getcwd()}/static/img/',
+                                 'users_pictures')
         if not os.path.exists(directory):
             os.mkdir(directory)
         f = form.picture.data
@@ -232,30 +234,37 @@ def quiz_edit(pk):
         abort(404)
     context['title'] = str(quiz.title) + ' edit'
     if form.validate_on_submit():
-        if quiz.owner_id == current_user.id:
-            quiz.title = form.title.data
-            quiz.text = form.text.data
-            questions = [[form.question1.data,
-                          [form.option_1_1.data, form.option_1_2.data,
-                           form.option_1_3.data, form.option_1_4.data]],
-                         [form.question2.data,
-                          [form.option_2_1.data, form.option_2_2.data,
-                           form.option_2_3.data, form.option_2_4.data]],
-                         [form.question3.data,
-                          [form.option_3_1.data, form.option_3_2.data,
-                           form.option_3_3.data, form.option_3_4.data]],
-                         [form.question4.data,
-                          [form.option_4_1.data, form.option_4_2.data,
-                           form.option_4_3.data, form.option_4_4.data]],
-                         [form.question5.data,
-                          [form.option_5_1.data, form.option_5_2.data,
-                           form.option_5_3.data, form.option_5_4.data]]]
+        if quiz.owner_id == current_user.id or quiz.owner_id:
+            quiz.title = form.title.data or quiz.title
+            quiz.text = form.text.data or quiz.title
+            quests = loads(quiz.questions)
+            questions = [[form.question1.data or quests[0][0],
+                          [form.option_1_1.data or quests[0][1][0],
+                           form.option_1_2.data or quests[0][1][1],
+                           form.option_1_3.data or quests[0][1][2],
+                           form.option_1_4.data or quests[0][1][3]]],
+                         [form.question2.data or quests[1][0],
+                          [form.option_2_1.data or quests[1][1][0],
+                           form.option_2_2.data or quests[1][1][1],
+                           form.option_2_3.data or quests[1][1][2],
+                           form.option_2_4.data or quests[1][1][3]]],
+                         [form.question3.data or quests[2][0],
+                          [form.option_3_1.data or quests[2][1][0],
+                           form.option_3_2.data or quests[2][1][1],
+                           form.option_3_3.data or quests[2][1][2],
+                           form.option_3_4.data or quests[2][1][3]]],
+                         [form.question4.data or quests[3][0],
+                          [form.option_4_1.data or quests[3][1][0],
+                           form.option_4_2.data or quests[3][1][1],
+                           form.option_4_3.data or quests[3][1][2],
+                           form.option_4_4.data or quests[3][1][3]]],
+                         [form.question5.data or quests[4][0],
+                          [form.option_5_1.data or quests[4][1][0],
+                           form.option_5_2.data or quests[4][1][1],
+                           form.option_5_3.data or quests[4][1][2],
+                           form.option_5_4.data or quests[4][1][3]]]]
             quiz.questions = dumps(questions)
-            quiz.answers = form.answers.data
-            directory = os.path.join(f'{os.getcwd()}/static/img/',
-                                     'users_pictures')
-            if not os.path.exists(directory):
-                os.mkdir(directory)
+            quiz.answers = form.answers.data or quiz.answers
             f = form.picture.data
             im = Image.open(BytesIO(f.read()))
             im.save(
