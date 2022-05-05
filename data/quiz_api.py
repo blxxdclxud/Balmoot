@@ -1,7 +1,8 @@
-import flask
-from flask import jsonify, request
-from flask_login import login_user
 from json import loads
+
+import flask
+from flask import jsonify, abort
+from requests import get
 
 from CONSTANTS import *
 from . import db_session
@@ -16,7 +17,8 @@ blueprint = flask.Blueprint(
 
 def get_translated_text(text, language):
     url = "https://translated-mymemory---translation-memory.p.rapidapi.com/api/get"
-    params = {"langpair": f"ru|{LANGUAGES[language]}", "q": None, "mt": "1", "onlyprivate": "0", "de": "a@b.c"}
+    params = {"langpair": f"ru|{LANGUAGES[language]}", "q": None, "mt": "1",
+              "onlyprivate": "0", "de": "a@b.c"}
     headers = {
         'x-rapidapi-key': "1e969770a5msh5896a54cd19e719p155db8jsnf0d1e659764f",
         'x-rapidapi-host': "translated-mymemory---translation-memory.p.rapidapi.com"
@@ -31,7 +33,8 @@ def get_translated_text(text, language):
     return json_response["responseData"]["translatedText"]
 
 
-@blueprint.route('/api/quiz/<int:quiz_id>/translate/<str:language>/', methods=['GET'])
+@blueprint.route('/api/quiz/<int:quiz_id>/translate/<str:language>/',
+                 methods=['GET'])
 def translate_quiz(quiz_id, language):
     db_sess = db_session.create_session()
     quiz = db_sess.query(Quiz).filter(Quiz.id == quiz_id).first()
@@ -49,7 +52,9 @@ def translate_quiz(quiz_id, language):
     return jsonify(result)
 
 
-@blueprint.route('/api/quiz/<int:quiz_id>/translate/<str:language>/<int:question_id>', methods=['GET'])
+@blueprint.route(
+    '/api/quiz/<int:quiz_id>/translate/<str:language>/<int:question_id>',
+    methods=['GET'])
 def translate_question(quiz_id, language, question_id):
     db_sess = db_session.create_session()
     quiz = db_sess.query(Quiz).filter(Quiz.id == quiz_id).first()
