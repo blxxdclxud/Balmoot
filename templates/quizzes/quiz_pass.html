@@ -2,13 +2,13 @@
 
 {% block content %}
     <h1>{{ quest[0] }}</h1>
+    <h3>{{ message }}</h3>
     <form action="" method="post">
         {{ form.hidden_tag() }}
         {% for option in form.response %}
             <p>{{ option() }} {{ quest[1][loop.index0] }}</p>
         {% endfor %}
         <p>{{ form.submit(type="submit", class="btn btn-primary") }}</p>
-        <div class="alert alert-danger">{{ message }}</div>
     </form>
 
 {% endblock %}

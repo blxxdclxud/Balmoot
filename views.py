@@ -164,6 +164,7 @@ def quiz_create():
             os.mkdir(directory)
         f = form.picture.data
         if f:
+            print(f)
             im = Image.open(BytesIO(f.read()))
             im.save(os.getcwd().replace('\\', '/') +
                     f"/static/img/users_pictures/quizz_{quiz.title}_picture.png")

@@ -2,6 +2,7 @@
 
 {% block content %}
     <h1>Edit your profile</h1>
+    <h3>{{ message }}</h3>
     <h2>Name: {{ current_user.first_name }}</h2>
     <h2>Surname: {{ current_user.last_name }}</h2>
     <br>
@@ -21,6 +22,5 @@
         {% endif %}
     {% endfor %}
         <p>{{ form.submit(type="submit", class="btn btn-primary") }}</p>
-        <div>{{ message }}</div>
     </form>
 {% endblock %}

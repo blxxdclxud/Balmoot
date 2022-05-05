@@ -2,28 +2,18 @@
 
 {% block content %}
     <h1>Login</h1>
+    <h3>{{ message }}</h3>
     <form action="" method="post">
         {{ form.hidden_tag() }}
         <p>
             {{ form.username_or_email.label }}<br>
             {{ form.username_or_email(class="form-control", type="username_or_email") }}<br>
-            {% for error in form.username_or_email.errors %}
-                <div class="alert alert-danger" role="alert">
-                    {{ error }}
-                </div>
-            {% endfor %}
         </p>
         <p>
             {{ form.password.label }}<br>
             {{ form.password(class="form-control", type="password") }}<br>
-            {% for error in form.password.errors %}
-                <div class="alert alert-danger" role="alert">
-                    {{ error }}
-                </div>
-            {% endfor %}
         </p>
         <p>{{ form.remember_me() }} {{ form.remember_me.label }}</p>
         <p>{{ form.submit(type="submit", class="btn btn-primary") }}</p>
-        <div>{{ message }}</div>
     </form>
 {% endblock %}

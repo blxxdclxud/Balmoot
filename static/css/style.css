@@ -148,6 +148,8 @@ footer {
 .image{
     height: 200px;
     width: auto;
+    margin-top: 20px;
+    margin-bottom: 20px;
 }
 
 h5 {
