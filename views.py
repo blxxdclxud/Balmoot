@@ -364,4 +364,6 @@ def main():
         os.mkdir(directory)
     db_session.global_init("db/balmoot.db")
     app.debug = True
-    app.run(port=8080, host='127.0.0.1')
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host='0.0.0.0', port=port)
+
