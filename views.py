@@ -266,12 +266,13 @@ def quiz_edit(pk):
             quiz.questions = dumps(questions)
             quiz.answers = form.answers.data or quiz.answers
             f = form.picture.data
-            im = Image.open(BytesIO(f.read()))
-            im.save(
-                os.getcwd().replace('\\', '/') +
-                f"/static/img/users_pictures/quizz_{quiz.title}_picture.png")
-            quiz.picture_path = \
-                f"/static/img/users_pictures/quizz_{quiz.title}_picture.png"
+            if f:
+                im = Image.open(BytesIO(f.read()))
+                im.save(
+                    os.getcwd().replace('\\', '/') +
+                    f"/static/img/users_pictures/quizz_{quiz.title}_picture.png")
+                quiz.picture_path = \
+                    f"/static/img/users_pictures/quizz_{quiz.title}_picture.png"
             db_sess.commit()
             return redirect(f'/quizzes/{quiz.id}/')
         context['message'] = 'У вас нет доступа'
