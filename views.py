@@ -320,8 +320,8 @@ def quiz_pass(pk, qn):
     if not quiz or qn > 4 or qn < 0:
         abort(404)
     if form.validate_on_submit():
-        if passing.get(current_user.id, False):
-            passing[str(current_user.id)][str(pk)][qn] = 0
+        if passing.get(str(current_user.id), False):
+            passing[str(current_user.id)][str(pk)][qn] = form.response.data
         else:
             passing[str(current_user.id)] = {str(pk): [0, 0, 0, 0, 0]}
         passing[str(current_user.id)][str(pk)][qn] = form.response.data
